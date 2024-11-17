@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/rahji/wordsearch"
-	"github.com/rahji/wordsearcher/internal/wordlist"
+	"github.com/rahji/wordsearch-cli/internal/wordlist"
 	"github.com/spf13/pflag"
 )
 
