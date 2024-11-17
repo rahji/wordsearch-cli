@@ -33,6 +33,24 @@ CHEWBACCA   TATOOINE
 JEDI        LUKE
 YODA
 ```
+Showing a grid using `wordsearch.GridWithSpaces`:
+
+```
+O S             O B I W A N
+L R I B O N E K
+O A       S K Y W A L K E R
+S W     C H E W B A C C A
+N R             H T I S
+A A       D E A T H S T A R
+H T             E M P I R E
+  S   A   T A T O O I N E
+A     D N       I
+D     R   A       D
+O L   O     K       E
+Y U   I       I       J
+  K   D         N
+  E
+```
 
 ## Install
 
