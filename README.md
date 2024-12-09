@@ -27,3 +27,8 @@ happen. I made a package that should allow anyone to make their own wordsearch p
 http://github.com/rahji/wordsearch
 
 ## Usage
+
+Run the command with the `-f` flag to specify the file that contains the word list. Or pipe the list of words to this
+command.
+
+`-s` specifies the size of the grid.

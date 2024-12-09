@@ -20,7 +20,7 @@ func main() {
 	)
 
 	pflag.StringVarP(&inputFile, "file", "f", "", "input file (if not specified, reads from STDIN)")
-	pflag.IntVarP(&size, "size", "s", 16, "grid size (default: 16)")
+	pflag.IntVarP(&size, "size", "s", 16, "grid size")
 	pflag.BoolVarP(&help, "help", "h", false, "show help message")
 	pflag.Parse()
 
