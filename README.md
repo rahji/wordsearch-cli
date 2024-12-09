@@ -26,18 +26,4 @@ Now: I've been learning to write programs using Go and I thought this would be a
 happen. I made a package that should allow anyone to make their own wordsearch puzzle generator or interactive game:
 http://github.com/rahji/wordsearch
 
-## Next Steps
-
-I'm trying to figure out what the next iteration will be. These are the options I'm considering:
-
-- A simple CLI application with minimal options. (That's this repo)
-- A fancier TUI application using Bubble Tea. This would still require access via a terminal, but it would afford
-  feedback while making the puzzle. You could regenerate the whole puzzle if you wanted a new random arrangement of the
-  same word list, or you could add a word while keeping the current puzzle layout, for example. I could also make it
-  accessible via SSH using Wish, which would not require any kind of installation but would limit the types of output.
-- A GUI application that uses Fyne. This would be nice because it wouldn't require someone to know anything about the
-  command-line, it would work on any operating system, and would again allow some instant feedback when making the
-  puzzle.
-
-None of the options would require internet access (except for the SSH version). It would be nice if any/all of the
-options could output text or a PDF file (or maybe an HTML file).
+## Usage
