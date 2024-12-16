@@ -33,6 +33,7 @@ CHEWBACCA   TATOOINE
 JEDI        LUKE
 YODA
 ```
+
 Showing a grid using `wordsearch.GridWithSpaces`:
 
 ```
