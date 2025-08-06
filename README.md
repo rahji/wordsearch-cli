@@ -34,25 +34,6 @@ JEDI        LUKE
 YODA
 ```
 
-Showing a grid using `wordsearch.GridWithSpaces`:
-
-```
-O S             O B I W A N
-L R I B O N E K
-O A       S K Y W A L K E R
-S W     C H E W B A C C A
-N R             H T I S
-A A       D E A T H S T A R
-H T             E M P I R E
-  S   A   T A T O O I N E
-A     D N       I
-D     R   A       D
-O L   O     K       E
-Y U   I       I       J
-  K   D         N
-  E
-```
-
 ## Install
 
 The easiest way to install this is using `go install`:
@@ -61,8 +42,8 @@ The easiest way to install this is using `go install`:
 go install github.com/rahji/wordsearch-cli@latest
 ```
 
-If anyone is interested, I can create Releases so you can just download it for your computer. I don't expect anyone to
-use this one though - I will make something more user-friendly.
+If anyone is interested, I can create Releases, so you can just download it for your computer. I don't expect anyone to
+use this one though. It's really just a totally-working demo.
 
 ## Background
 
@@ -73,11 +54,21 @@ so I let the domain name lapse and stopped serving the site.
 
 Now: I've been learning to write programs using Go and I thought this would be a good small project to try and make
 happen. I made a package that should allow anyone to make their own wordsearch puzzle generator or interactive game:
-http://github.com/rahji/wordsearch
+http://github.com/rahji/wordsearch/v2
 
 ## Usage
 
 Run the command with the `-f` flag to specify the file that contains the word list. Or pipe the list of words to this
 command.
 
-`-s` specifies the size of the grid.
+The rest of the options:
+
+```
+Usage of ./wordsearch-cli:
+  -f, --file string   input file (if not specified, reads from STDIN)
+  -h, --help          show help message
+  -d, --nodiagonal    disallow diagonal words
+  -o, --nooverlap     disallow overlapping words
+  -r, --noreverse     disallow reverse words
+  -s, --size int      grid size (default 16)
+```
