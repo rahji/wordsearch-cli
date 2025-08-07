@@ -65,10 +65,13 @@ The rest of the options:
 
 ```
 Usage of ./wordsearch-cli:
-  -f, --file string   input file (if not specified, reads from STDIN)
-  -h, --help          show help message
-  -d, --nodiagonal    disallow diagonal words
-  -o, --nooverlap     disallow overlapping words
-  -r, --noreverse     disallow reverse words
-  -s, --size int      grid size (default 16)
+  -f, --file string    input file (if not specified, reads from STDIN)
+  -s, --size int       grid size (default 16)
+  -o, --order string   sorting method for the legend
+                       ["a-z" "len" "rlen" "z-a"] (default "a-z")
+      --nooverlap      disallow overlapping words
+      --nodiagonal     disallow diagonal words
+      --nobackwards    disallow backwards-reading words
+      --solution       show the solution
+  -h, --help           show help message
 ```

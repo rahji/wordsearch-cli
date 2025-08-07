@@ -113,21 +113,7 @@ func main() {
 	}
 	words = words[:n]
 
-	// sort them before displaying the legend
-	switch sortBy {
-	case "a-z":
-		slices.Sort(words)
-	case "z-a":
-		slices.Reverse(words)
-	case "len":
-		sort.Slice(words, func(i, j int) bool {
-			return len(words[i]) < len(words[j])
-		})
-	case "rlen":
-		sort.Slice(words, func(i, j int) bool {
-			return len(words[i]) > len(words[j])
-		})
-	}
+	fmt.Println(formattedLegend(words, sortBy))
 
 	// longest := longestLength(words)
 	// cols := ((size*2)-1 > (longest*2)+3) // true means there is room for 2 columns
@@ -141,10 +127,6 @@ func main() {
 	// 		}
 	// 	}
 	// } else {}
-
-	for _, w := range words {
-		fmt.Println(w)
-	}
 
 	if unplaced != nil {
 		fmt.Printf("\nWARNING: These %d words could not be placed: %v\n", len(unplaced), unplaced)
@@ -215,6 +197,32 @@ func formattedGrid(grid [][]byte, solution bool) string {
 			ret.WriteByte(grid[i][j] - 32)
 			ret.WriteString(" ")
 		}
+		ret.WriteString("\n")
+	}
+	return ret.String()
+}
+
+func formattedLegend(words []string, sortBy string) string {
+	ret := strings.Builder{}
+
+	switch sortBy {
+	case "a-z":
+		slices.Sort(words)
+	case "z-a":
+		slices.Sort(words)
+		slices.Reverse(words)
+	case "len":
+		sort.Slice(words, func(i, j int) bool {
+			return len(words[i]) < len(words[j])
+		})
+	case "rlen":
+		sort.Slice(words, func(i, j int) bool {
+			return len(words[i]) > len(words[j])
+		})
+	}
+
+	for _, w := range words {
+		ret.WriteString(w)
 		ret.WriteString("\n")
 	}
 	return ret.String()
