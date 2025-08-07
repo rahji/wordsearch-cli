@@ -3,6 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
+	"slices"
+	"sort"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/rahji/wordsearch-cli/internal/wordlist"
@@ -14,25 +17,53 @@ func main() {
 
 	// define flags
 	var (
-		inputFile  string
-		size       int
-		noOverlap  bool
-		noDiagonal bool
-		noReverse  bool
-		help       bool
+		inputFile    string
+		size         int
+		sortBy       string
+		noOverlap    bool
+		noDiagonal   bool
+		noBackwards  bool
+		showSolution bool
+		help         bool
 	)
+
+	allowedSortValues := map[string]bool{
+		"a-z":  true,
+		"z-a":  true,
+		"len":  true,
+		"rlen": true,
+	}
+	sortings := make([]string, len(allowedSortValues))
+	i := 0
+	for k := range allowedSortValues {
+		sortings[i] = k
+		i++
+	}
+	slices.Sort(sortings)
 
 	pflag.StringVarP(&inputFile, "file", "f", "", "input file (if not specified, reads from STDIN)")
 	pflag.IntVarP(&size, "size", "s", 16, "grid size")
-	pflag.BoolVarP(&noOverlap, "nooverlap", "o", false, "disallow overlapping words")
-	pflag.BoolVarP(&noDiagonal, "nodiagonal", "d", false, "disallow diagonal words")
-	pflag.BoolVarP(&noReverse, "noreverse", "r", false, "disallow reverse words")
+	pflag.StringVarP(&sortBy, "order", "o", "a-z",
+		fmt.Sprintf("sorting method for the legend\n%q", sortings),
+	)
+	pflag.BoolVarP(&noOverlap, "nooverlap", "", false, "disallow overlapping words")
+	pflag.BoolVarP(&noDiagonal, "nodiagonal", "", false, "disallow diagonal words")
+	pflag.BoolVarP(&noBackwards, "nobackwards", "", false, "disallow backwards-reading words")
+	pflag.BoolVarP(&showSolution, "solution", "", false, "show the solution")
 	pflag.BoolVarP(&help, "help", "h", false, "show help message")
+	pflag.CommandLine.SortFlags = false
 	pflag.Parse()
 
 	if help {
 		pflag.Usage()
 		os.Exit(0)
+	}
+
+	sortBy = strings.ToLower(sortBy)
+	_, ok := allowedSortValues[sortBy]
+	if !ok {
+		fmt.Printf("invalid sorting method: %s. Must be one of %q\n", sortBy, sortings)
+		os.Exit(1)
 	}
 
 	words, err := wordlist.GetWords(inputFile)
@@ -45,7 +76,7 @@ func main() {
 	if noDiagonal == false {
 		directions = append(directions, "SE", "SW")
 	}
-	if noReverse == false {
+	if noBackwards == false {
 		directions = append(directions, reverseCardinals(directions)...)
 	}
 
@@ -74,16 +105,37 @@ func main() {
 	grid := ws.ReturnGrid(wordsearch.GridRaw)
 	for i := range grid {
 		for j := range grid[i] {
-			if grid[i][j] >= 97 { // lowercase
-				fmt.Printf("%c ", grid[i][j]-32)
-			} else { // uppercase
+			if grid[i][j] < 97 && showSolution {
+				// <97 is uppercase
 				bold.Printf("%c ", grid[i][j])
+				continue
 			}
+			if grid[i][j] < 97 {
+				fmt.Printf("%c ", grid[i][j])
+				continue
+			}
+			// else lowercase
+			fmt.Printf("%c ", grid[i][j]-32)
 		}
 		fmt.Println()
 	}
-
 	fmt.Println()
+
+	switch sortBy {
+	case "a-z":
+		slices.Sort(words)
+	case "z-a":
+		slices.Reverse(words)
+	case "len":
+		sort.Slice(words, func(i, j int) bool {
+			return len(words[i]) < len(words[j])
+		})
+	case "rlen":
+		sort.Slice(words, func(i, j int) bool {
+			return len(words[i]) > len(words[j])
+		})
+	}
+
 	for _, w := range words {
 		if _, exists := unplacedMap[w]; !exists {
 			fmt.Println(w)
@@ -91,7 +143,7 @@ func main() {
 	}
 
 	if unplaced != nil {
-		fmt.Printf("\nFYI these %d words could not be placed: %v\n", len(unplaced), unplaced)
+		fmt.Printf("FYI these %d words could not be placed: %v\n", len(unplaced), unplaced)
 	}
 }
 
