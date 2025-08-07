@@ -7,7 +7,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/fatih/color"
 	"github.com/rahji/wordsearch-cli/internal/wordlist"
 	"github.com/rahji/wordsearch/v2"
 	"github.com/spf13/pflag"
@@ -100,27 +99,21 @@ func main() {
 		unplacedMap[word] = struct{}{}
 	}
 
-	bold := color.New(color.FgBlue)
-
 	grid := ws.ReturnGrid(wordsearch.GridRaw)
-	for i := range grid {
-		for j := range grid[i] {
-			if grid[i][j] < 97 && showSolution {
-				// <97 is uppercase
-				bold.Printf("%c ", grid[i][j])
-				continue
-			}
-			if grid[i][j] < 97 {
-				fmt.Printf("%c ", grid[i][j])
-				continue
-			}
-			// else lowercase
-			fmt.Printf("%c ", grid[i][j]-32)
-		}
-		fmt.Println()
-	}
+	fmt.Println(formattedGrid(grid, false))
 	fmt.Println()
 
+	// filter out unplaced words
+	n := 0
+	for _, w := range words {
+		if _, exists := unplacedMap[w]; !exists {
+			words[n] = w
+			n++
+		}
+	}
+	words = words[:n]
+
+	// sort them before displaying the legend
 	switch sortBy {
 	case "a-z":
 		slices.Sort(words)
@@ -136,14 +129,30 @@ func main() {
 		})
 	}
 
+	// longest := longestLength(words)
+	// cols := ((size*2)-1 > (longest*2)+3) // true means there is room for 2 columns
+	// xxx filter slice based on unplaced map
+	// if !cols print if it's not in the unplaced map
+	// if cols loop from 1 to length of words - unplaced length
+	// if cols {
+	// 	for i:= 0; i<=len(words)/2; i++ {
+	// 		if _, exists := unplacedMap[words[i]]; !exists {
+	// 			fmt.Printf("%"+longest+"s   "%s\n", w)
+	// 		}
+	// 	}
+	// } else {}
+
 	for _, w := range words {
-		if _, exists := unplacedMap[w]; !exists {
-			fmt.Println(w)
-		}
+		fmt.Println(w)
 	}
 
 	if unplaced != nil {
-		fmt.Printf("FYI these %d words could not be placed: %v\n", len(unplaced), unplaced)
+		fmt.Printf("\nWARNING: These %d words could not be placed: %v\n", len(unplaced), unplaced)
+	}
+
+	if showSolution {
+		fmt.Print("\n\n")
+		fmt.Println(formattedGrid(grid, true))
 	}
 }
 
@@ -172,4 +181,41 @@ func reverseCardinals(dirs []string) []string {
 		}
 	}
 	return ret
+}
+
+// longestLength returns the number of characters in a slice's longest word
+func longestLength(words []string) int {
+	longest := 0
+	for _, w := range words {
+		if len(w) > 0 {
+			longest = len(w)
+		}
+	}
+	return longest
+}
+
+// formattedGrid returns the grid (or the solution) as a printable string,
+// (remember that the grid uses uppercase for letters that are part of the solution,
+//
+//	and lowercase letters for "filler" letters)
+func formattedGrid(grid [][]byte, solution bool) string {
+	ret := strings.Builder{}
+	for i := range grid {
+		for j := range grid[i] {
+			if grid[i][j] < 97 { // uppercase
+				ret.WriteByte(grid[i][j])
+				ret.WriteString(" ")
+				continue
+			}
+			if solution { // lowercase, but we want the solution only
+				ret.WriteString("  ")
+				continue
+			}
+			// lowercase, but show it as uppercase
+			ret.WriteByte(grid[i][j] - 32)
+			ret.WriteString(" ")
+		}
+		ret.WriteString("\n")
+	}
+	return ret.String()
 }
