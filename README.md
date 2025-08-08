@@ -1,6 +1,6 @@
-# Wordsearch-cli
+# ▦ Wordsearcher
 
-Wordsearch-cli is a command-line program that can create a puzzle from a word list -
+Wordsearcher is a command-line program that can create a puzzle from a word list -
 either from a text file or piped from STDIN. It produces a plaintext version of the output and
 optionally makes a PDF file, with some options for how it's formatted. It can also produce
 the solution at the same time.
@@ -43,15 +43,15 @@ YODA
 ## Install
 
 Download the appropriate binary from the Releases page and place it somewhere in your PATH.
-Then type `wordsearch-cli` and some options from below in your terminal application.
+Then type `wordsearcher` and some options from below in your terminal application.
 
 For example:
 
 ```bash
-./wordsearch-cli --cols 3 --size 16 -f starwars.txt --pdf puzzle.pdf --title "STAR WARS" --solution
+./wordsearcher --cols 3 --size 16 -f starwars.txt --pdf puzzle.pdf --title "STAR WARS" --solution
 ```
 
-(Of course, if you have Go installed, you can install by typing: this is using `go install github.com/rahji/wordsearch-cli@latest`)
+(Of course, if you have Go installed, you can install by typing: this is using `go install github.com/rahji/wordsearcher@latest`)
 
 ## Background
 
@@ -72,7 +72,7 @@ command.
 The rest of the options:
 
 ```
-Usage of ./wordsearch-cli:
+Usage of ./wordsearcher:
   -f, --file string    input file (if not specified, reads from STDIN)
   -s, --size int       grid size (default 16)
       --pdf string     output PDF file (instead of STDOUT)
