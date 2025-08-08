@@ -1,4 +1,4 @@
-module github.com/rahji/wordsearch-cli
+module github.com/rahji/wordsearcher
 
 go 1.24.5
 
