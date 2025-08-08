@@ -1,12 +1,18 @@
 # Wordsearch-cli
 
 Wordsearch-cli is a command-line program that can create a puzzle from a word list -
-either from a text file or piped from STDIN. It should work on any computer, but I'm not sure how Windows will like
+either from a text file or piped from STDIN. It produces a plaintext version of the output and
+optionally makes a PDF file, with some options for how it's formatted. It can also produce
+the solution at the same time.
+
+This should work on any computer, but I'm not sure how Windows will like
 piping from STDIN. It uses the [Go wordsearch package](http://github.com/rahji/wordsearch) I wrote.
 
 ## Example
 
 ```
+STAR WARS
+
 W C Z K B G F B B E U L S S P T
 S I F B E M C O F B V U T S I F
 N D O V M N N K F Z K K R E M M
@@ -36,14 +42,16 @@ YODA
 
 ## Install
 
-The easiest way to install this is using `go install`:
+Download the appropriate binary from the Releases page and place it somewhere in your PATH.
+Then type `wordsearch-cli` and some options from below in your terminal application.
+
+For example:
 
 ```bash
-go install github.com/rahji/wordsearch-cli@latest
+./wordsearch-cli --cols 3 --size 16 -f starwars.txt --pdf puzzle.pdf --title "STAR WARS" --solution
 ```
 
-If anyone is interested, I can create Releases, so you can just download it for your computer. I don't expect anyone to
-use this one though. It's really just a totally-working demo.
+(Of course, if you have Go installed, you can install by typing: this is using `go install github.com/rahji/wordsearch-cli@latest`)
 
 ## Background
 
@@ -67,11 +75,16 @@ The rest of the options:
 Usage of ./wordsearch-cli:
   -f, --file string    input file (if not specified, reads from STDIN)
   -s, --size int       grid size (default 16)
+      --pdf string     output PDF file (instead of STDOUT)
+      --title string   title of the puzzle
+      --solution       also show the solution
   -o, --order string   sorting method for the legend
                        ["a-z" "len" "rlen" "z-a"] (default "a-z")
+      --cols int       legend columns (default 2)
       --nooverlap      disallow overlapping words
       --nodiagonal     disallow diagonal words
       --nobackwards    disallow backwards-reading words
-      --solution       show the solution
   -h, --help           show help message
 ```
+
+> TIP: to make an easy puzzle, you might use the `--nodiagonal` and `--nobackwards` options with a small `--size`
